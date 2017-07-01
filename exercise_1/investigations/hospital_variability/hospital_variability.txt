@@ -1,0 +1,26 @@
+Which procedures have the greatest variability between hospitals?
+
+For variability between hospitals we used the variance as a percentage of the mean as our metric. As a method to block out low sample size metrics we will filter out metrics that have scores for less than 5% of the hospitals.
+
+Assumptions
+
+* "Procedures" in the question is actually referring to any metric that is available. Since there is not a way to segment the data by "procedures", even with a good definition, we will leave the analysis open ended to simply look at the variance in metric scores achieved between hospitals.
+
+Results and Discussion
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------+
+|description                                                                                                                                                          |score_variance_mean_relative|
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------+
+|Admit Decision Time to ED Departure Time for Admitted Patients                                                                                                       |41.90505597952913           |
+|Median Time from ED Arrival to ED Departure for Admitted ED Patients                                                                                                 |38.56941631617667           |
+|Median Time to Transfer to Another Facility for Acute Coronary Intervention- Reporting Rate                                                                          |22.112642595313066          |
+|Median Time from ED Arrival to ED Departure for Discharged ED Patients                                                                                               |13.310149866603252          |
+|Median Time from ED Arrival to Provider Contact for ED patients                                                                                                      |13.08175093686787           |
+|Abdomen CT - Use of Contrast Material                                                                                                                                |11.652738845682977          |
+|Thorax CT - Use of Contrast Material                                                                                                                                 |10.78333610639603           |
+|Hospital Acquired Potentially-Preventable Venous Thromboembolism                                                                                                     |10.567634923129162          |
+|Percentage of patients aged 18 years and older who had cataract surgery and had improvement in visual function achieved within 90 days following the cataract surgery|10.239579347089322          |
+|Elective Delivery                                                                                                                                                    |9.42570755121885            |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------+
+
+We don't have a great sanity check on our results however it is interesting to note that the top 5 metrics all have to do with temporal measures. This is a sensible conclusion as there can be huge differences in servicing time between differing hospitals.

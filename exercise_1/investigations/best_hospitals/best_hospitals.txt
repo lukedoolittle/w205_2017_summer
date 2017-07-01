@@ -1,0 +1,66 @@
+What hospitals are models of high-quality care? That is, which hospitals have the most consistently high scores for a variety of procedures.
+
+To determine the best hospitals we will select some subset of the measures from the parameters table to observe for all hospitals and then take a weighted average of those relevant measures at each hospital to create a score. To select the measures to observe we will use the following critera:
+
+* The measure should have a score for a large portion of the hospitals; this allow for a more robust, relative comparison
+* The measure should be relevant to the quality of care for the patient
+* The scores for the measure should be interpretable; we should have some understanding of what a hospitals numeric score means relative to other hospitals
+
+To select the measures according to the above criteria we did the following:
+
+* Found all measures that had scores for more that 50% of the hospitals studied
+* Used both the information in the data dictionary as well as the correlation between the measure score and the overall score for the hospital to determine how to interpret the measure (ie lower is better); any measure that had scores that were difficult to interpret were excluded
+
+The selected measures are enumerated in create_scaled_scores.py.
+
+Assumptions
+
+* The hospital quality is not related to payments. Cost is a concern orthogonal to quality of care (that is to say knowing that a procedure has a high cost at a hospital doesn't indicate anything about its quality)
+
+For each score we will normalize the score over [0,1] relative to the max and min of the measure across all hospitals and then scale that score based on a subjective assessment of importance (high, medium, low). Then for each provider we will compute the average of all of their scores. The final quality of care score will be based on both the mean and standard deviation for all the scores calculated above.
+
+Results and Discussion
+
++-------------------------------------------+------------------------+---------------------+--------------------+
+|hospital_name                              |mean_scaled_score       |variance_scaled_score|sum_scaled_score    |
++-------------------------------------------+------------------------+---------------------+--------------------+
+|THE HEART HOSPITAL BAYLOR DENTON           |0.1614219003223455984615|0.17604308987266776  |4.196969408380985560|
+|MOUNTAIN VIEW HOSPITAL                     |0.1573349221586863656296|0.16851813385751857  |4.248042898284531872|
+|MIDWESTERN REGION MED CENTER               |0.1497940256536478594483|0.14671090949040164  |4.344026743955787924|
+|PEARLAND MEDICAL CENTER                    |0.1477815279191739054800|0.1729005145297681   |3.694538197979347637|
+|KANSAS HEART HOSPITAL                      |0.1453041240328065502692|0.18931182563813007  |3.777907224852970307|
+|NEW ENGLAND BAPTIST HOSPITAL               |0.1269988126240083141290|0.1650229255326108   |3.936963191344257738|
+|KARMANOS CANCER CENTER                     |0.1262030709117156255600|0.21326138268111303  |3.155076772792890639|
+|ST VINCENT FISHERS HOSPITAL INC            |0.1189478289543090164000|0.15255035112286014  |4.163174013400815574|
+|ESSENTIA HEALTH DULUTH                     |0.1163713573451391680385|0.17599683559205404  |3.025655290973618369|
+|THE HEART HOSPITAL AT DEACONESS GATEWAY LLC|0.1149854434438110374800|0.22044904863266557  |2.874636086095275937|
++-------------------------------------------+------------------------+---------------------+--------------------+
+
+As a sanity check we might compare our scaled score to the overall score available for each hospital, which is a 1-5 score. The results are below for the top 20 hospitals.
+
++--------------------------------------------------+-------------+------------------------+
+|hospital_name                                     |overall_score|mean_scaled_score       |
++--------------------------------------------------+-------------+------------------------+
+|THE HEART HOSPITAL BAYLOR DENTON                  |null         |0.1614219003223455984615|
+|MOUNTAIN VIEW HOSPITAL                            |null         |0.1573349221586863656296|
+|MIDWESTERN REGION MED CENTER                      |4            |0.1497940256536478594483|
+|PEARLAND MEDICAL CENTER                           |null         |0.1477815279191739054800|
+|KANSAS HEART HOSPITAL                             |5            |0.1453041240328065502692|
+|NEW ENGLAND BAPTIST HOSPITAL                      |5            |0.1269988126240083141290|
+|KARMANOS CANCER CENTER                            |2            |0.1262030709117156255600|
+|ST VINCENT FISHERS HOSPITAL INC                   |4            |0.1189478289543090164000|
+|ESSENTIA HEALTH DULUTH                            |3            |0.1163713573451391680385|
+|THE HEART HOSPITAL AT DEACONESS GATEWAY LLC       |4            |0.1149854434438110374800|
+|OKLAHOMA SURGICAL HOSPITAL, LLC                   |5            |0.1149375665427270458077|
+|WOMEN & INFANTS HOSPITAL OF RHODE ISLAND          |2            |0.1104903601332333795333|
+|CHI HEALTH NEBRASKA HEART                         |5            |0.1061839400628425226071|
+|BAYLOR HEART AND VASCULAR HOSPITAL                |4            |0.1044692725647545926400|
+|AVERA HEART HOSPITAL OF SOUTH DAKOTA              |5            |0.1040482818877847107879|
+|COMMUNITY HOSPITAL, LLC                           |5            |0.1027318027120981517500|
+|MOUNTAIN VIEW REGIONAL HOSPITAL                   |null         |0.1010204996156601391852|
+|CACHE VALLEY  HOSPITAL                            |null         |0.1002749735153574434839|
+|BAYLOR MEDICAL CENTER AT FRISCO                   |4            |0.0988303170587664823333|
+|BAYLOR SCOTT AND WHITE SURGICAL HOSPITAL AT SHERMA|null         |0.0975531541826806108148|
++--------------------------------------------------+-------------+------------------------+
+
+Given that most of the top 10 results fall in the 4-5 range of overall score we can see that our score is at least weakly related to an authoritative measure of care.

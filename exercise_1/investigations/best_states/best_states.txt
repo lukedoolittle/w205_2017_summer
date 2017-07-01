@@ -1,0 +1,33 @@
+What states are models of high-quality care?
+
+To determine the best states we will aggregate the analysis performed for question 1 by state and then consider the mean and the variance of scores among the states to determine the best.
+
+An alternative would be to perform the sample analysis in determining best hospitals here, potentially considering more metrics. In that way we could essentially determine the best states regardless of the location of a hospital within a state (essentially taking the max score of each metric of all the hospitals in the state). While this would essentially give you the idea of the best care you could get in any given state the metric would be highly volatile year-to-year as it is overly dependant on the performance of your "best" hospitals.
+
+Assumptions
+
+* Any state score is valid regardless of the number of scored hospitals that state contains
+* We are only considering the 50 US states
+
+Results and Discussion
+
++-----+-------------------------------------------+----------------------+---------------------+-----------+
+|state|mean_scaled_score                          |sum_scaled_score      |variance_scaled_score|score_count|
++-----+-------------------------------------------+----------------------+---------------------+-----------+
+|MD   |0.16167775287511806394622093023255813953   |111.234293978081227995|0.15647235908756849  |688        |
+|UT   |0.012001551675479449171070931849791376912  |17.258231309339447908 |0.14865971774524267  |1438       |
+|MN   |0.0074226307611142494822016153155848040682 |24.813854634404936019 |0.14560461016055548  |3343       |
+|CO   |0.0018896048262689658717834960070984915705 |4.259169278410249075  |0.16115380900679868  |2254       |
+|TX   |-0.0032227210330846238018860188601886018860|-39.301082998466987264|0.15324118310860566  |12195      |
+|HI   |-0.0038497415537300655737704918032786885246|-2.113508112997806000 |0.1501152704605093   |549        |
+|MA   |-0.0047109898021541711126279863481228668942|-12.422880108280549224|0.1618099624745945   |2637       |
+|IN   |-0.0059973684483466538154486586493987049029|-25.932621170650931098|0.15605172156310781  |4324       |
+|SC   |-0.0060010341409318621515934539190353143842|-13.934401275243783916|0.15904446924815568  |2322       |
+|RI   |-0.0069535366783045581463414634146341463415|-3.421140045725842608 |0.15858457719436395  |492        |
++-----+-------------------------------------------+----------------------+---------------------+-----------+
+
+Since these values are all relative a sanity check against some other scorings is useful. In two articles about states with the best healthcare (not necessarily the same metric but similar), the top 10 lists overlap by 50% with the above list. This gives some confidence that our algorithm is accurate.
+
+Sources:
+https://smartasset.com/life-insurance/best-states-for-healthcare-access
+http://managedhealthcareexecutive.modernmedicine.com/managed-healthcare-executive/news/top-10-states-best-healthcare
