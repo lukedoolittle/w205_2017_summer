@@ -85,7 +85,7 @@ UNION
 SELECT 
 provider_id,
 "PC_01_HVBP_Performance" metric_id,
-cast(pc01_performance_rate as decimal(13,6)) score,,
+cast(pc01_performance_rate as decimal(13,6)) score,
 null sample_size
 FROM preventative_scores
 
