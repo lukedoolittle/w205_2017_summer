@@ -1,13 +1,12 @@
 Which procedures have the greatest variability between hospitals?
 
-For variability between hospitals we used the variance as a percentage of the mean as our metric. As a method to block out low sample size metrics we will filter out metrics that have scores for less than 5% of the hospitals.
+For variability between hospitals we used the variance as a percentage of the mean as our metric. In this way we can essentially look at how much the measure varies independent of the scale of the measure. As a method to block out low sample size (and therefore possibly artifically inflated variance) metrics we will filter out metrics that have scores for less than 5% of the hospitals.
 
 Assumptions
 
-* "Procedures" in the question is actually referring to any metric that is available. Since there is not a way to segment the data by "procedures", even with a good definition, we will leave the analysis open ended to simply look at the variance in metric scores achieved between hospitals.
+* Procedures in the question is actually referring to any metric that is available. Since there is not a way to segment the data by "procedures", even with a good definition, we will leave the analysis open ended to simply look at the variance in metric scores achieved between hospitals.
 
 Results and Discussion
-
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------+
 |description                                                                                                                                                          |score_variance_mean_relative|
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------+

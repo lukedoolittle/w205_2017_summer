@@ -1,15 +1,15 @@
 What hospitals are models of high-quality care? That is, which hospitals have the most consistently high scores for a variety of procedures.
 
-To determine the best hospitals we will select some subset of the measures from the parameters table to observe for all hospitals and then take a weighted average of those relevant measures at each hospital to create a score. To select the measures to observe we will use the following critera:
+To determine the best hospitals we will select some subset of the measures from the parameters table to observe for all hospitals and then take a weighted average of those relevant measures at each hospital to create a score. For a measure to be included we will use the following critera:
 
 * The measure should have a score for a large portion of the hospitals; this allow for a more robust, relative comparison
 * The measure should be relevant to the quality of care for the patient
 * The scores for the measure should be interpretable; we should have some understanding of what a hospitals numeric score means relative to other hospitals
 
-To select the measures according to the above criteria we did the following:
+To select the measures according to the above criteria we will do the following:
 
-* Found all measures that had scores for more that 50% of the hospitals studied
-* Used both the information in the data dictionary as well as the correlation between the measure score and the overall score for the hospital to determine how to interpret the measure (ie lower is better); any measure that had scores that were difficult to interpret were excluded
+* Find all measures that have scores for more that 50% of the hospitals studied
+* Use both the information in the data dictionary as well as the correlation between the measure score and the overall score for the hospital to determine how to interpret the measure (ie lower is better); any measure that has scores that are difficult to interpret will be excluded
 
 The selected measures are enumerated in create_scaled_scores.py.
 
