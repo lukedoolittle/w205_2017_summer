@@ -7,9 +7,16 @@
 
 * Run the setup script from the exercise_2 directory
 
-      cd exercise_2
+      cd w205_2017_summer/exercise_2
       ./setup.sh
 
-* Get the required credentials. For temporary store them in S3
+* Insert the required credentials into `extweetwordcount/src/spouts/tweets.py`
 
-      wget https://s3.amazonaws.com/lukedoolittle/Twittercredentials.py
+* Create all postgres tables required
+
+      python postgres_setup.py
+
+* Start Storm
+
+      cd extweetwordcount
+      sparse run
