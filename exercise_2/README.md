@@ -1,19 +1,21 @@
 ### Exercise 2 Setup
 
 * Create an EC2 instance from the given UCB AMI ([launch in east-1](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-d4dd4ec3))
-* Clone this repository
 
-      git clone https://github.com/lukedoolittle/w205_2017_summer.git
+* Get and run the setup script
 
-* Run the setup script from the exercise_2 directory
-
-      cd w205_2017_summer/exercise_2
+      wget https://raw.githubusercontent.com/lukedoolittle/w205_2017_summer/master/exercise_2/setup.sh?token=AB0QhH9MmObh_uG4CseBTrdwsaGoAawwks5ZfbqqwA%3D%3D
+      chmod +x setup.sh
       ./setup.sh
 
-* Insert the required credentials into `extweetwordcount/src/spouts/tweets.py`
+* Switch to W205 user and clone this repository
+
+      su - w205
+      git clone https://lukedoolittle@github.com/lukedoolittle/w205_2017_summer.git
 
 * Create all postgres tables required
 
+      cd w205_2017_summer/exercise_2
       python postgres_setup.py
 
 * Start Storm
