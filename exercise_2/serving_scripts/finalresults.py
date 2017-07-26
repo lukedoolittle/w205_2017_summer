@@ -8,14 +8,14 @@ conn = psycopg2.connect(
     host="localhost",
     port="5432")
 
-if len(sys.argv == 1):
+if len(sys.argv) == 1:
     cur = conn.cursor()
-    cur.execute("SELECT word, count FROM tweetwordcount ORDER BY word desc")
+    cur.execute("SELECT word, count FROM tweetwordcount ORDER BY word asc")
     records = cur.fetchall()
     for rec in records:
-        print("({0}: {1})\n".format(rec[0], rec[1]))
+        print("({0}: {1})".format(rec[0], rec[1]))
     conn.commit()
-elif len(sys.argv == 2):
+elif len(sys.argv) == 2:
     word = sys.argv[1]
     cur = conn.cursor()
     cur.execute("SELECT count FROM tweetwordcount WHERE word = '{0}'".format(word))
