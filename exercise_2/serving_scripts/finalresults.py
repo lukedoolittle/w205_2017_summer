@@ -10,7 +10,6 @@ conn = psycopg2.connect(
 
 if len(sys.argv == 1):
     cur = conn.cursor()
-    cur = conn.cursor()
     cur.execute("SELECT word, count FROM tweetwordcount ORDER BY word desc")
     records = cur.fetchall()
     for rec in records:

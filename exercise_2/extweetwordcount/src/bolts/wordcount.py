@@ -9,6 +9,21 @@ class WordCounter(Bolt):
     def initialize(self, conf, ctx):
         self.counts = Counter()
 
+        # we prepopulate the internal counts dictionary with
+        # any values that already exist in the database
+        conn = psycopg2.connect(
+            database="tcount",
+            user="postgres",
+            password="pass",
+            host="localhost",
+            port="5432")
+        cur = conn.cursor()
+        cur.execute("SELECT word, count FROM tweetwordcount")
+        records = cur.fetchall()
+        for rec in records:
+            self.counts[rec[0]] = rec[1]
+        conn.commit()
+
     def process(self, tup):
         word = tup.values[0]
 
@@ -19,7 +34,7 @@ class WordCounter(Bolt):
             password="pass",
             host="localhost",
             port="5432")
-
+            
         # remove apostrophes from any words as that is problematic with sql queries
         formatted_word = word.replace("'", "")
 
