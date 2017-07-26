@@ -1,6 +1,6 @@
-### Exercise 2 Setup
+### Exercise 2 Test Setup
 
-* Create an EC2 instance from the given UCB AMI ([launch in east-1](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-d4dd4ec3))
+* Create an EC2 instance from the given UCB AMI ([launch in east-1](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-d4dd4ec3)). Make sure to attach an appropriate EBS (snap-06488e7dc1e6d9ca3)
 
 * Get and run the setup script
 
