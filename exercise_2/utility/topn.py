@@ -1,10 +1,14 @@
 import sys
+from ConfigParser import SafeConfigParser
 import psycopg2
+
+parser = SafeConfigParser()
+parser.read('extweetwordcount.config')
 
 conn = psycopg2.connect(
     database="tcount",
-    user="postgres",
-    password="pass",
+    user=parser.get('postgres', 'username'),
+    password=parser.get('postgres', 'password'),
     host="localhost",
     port="5432")
 

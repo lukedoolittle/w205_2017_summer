@@ -1,10 +1,14 @@
 import sys
+from ConfigParser import SafeConfigParser
 import psycopg2
+
+parser = SafeConfigParser()
+parser.read('../extweetwordcount.config')
 
 conn = psycopg2.connect(
     database="tcount",
-    user="postgres",
-    password="pass",
+    user=parser.get('postgres', 'username'),
+    password=parser.get('postgres', 'password'),
     host="localhost",
     port="5432")
 
@@ -16,9 +20,9 @@ if len(sys.argv) == 1:
         print("({0}: {1})".format(rec[0], rec[1]))
     conn.commit()
 elif len(sys.argv) == 2:
-    word = sys.argv[1]
+    word = sys.argv[1].replace("'", "''")
     cur = conn.cursor()
-    cur.execute("SELECT count FROM tweetwordcount WHERE word = '{0}'".format(word))
+    cur.execute("SELECT count FROM tweetwordcount WHERE word = %(word)s", {'word': word})
     records = cur.fetchone()
     conn.commit()
     if records is None:

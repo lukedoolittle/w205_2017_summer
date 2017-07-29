@@ -1,25 +1,15 @@
 from __future__ import absolute_import, print_function, unicode_literals
-
-import itertools, time
+from ConfigParser import SafeConfigParser
+import time
+import Queue
 import tweepy, copy 
-import Queue, threading
 
 from streamparse.spout import Spout
 
-################################################################################
-# Twitter credentials
-################################################################################
-twitter_credentials = {
-    "consumer_key"        :  "5bul50atzZLo9NPdk2hRYjxVo",
-    "consumer_secret"     :  "Q7xYWQiviIkDvrDozh8FoRQpjySH0WBiO95plyPUyVk3eVJ9qq",
-    "access_token"        :  "179740020-OhRM9SzxGS8T2MfuvCb6Vxdo4edXFJF5fuAozpox",
-    "access_token_secret" :  "U6L2y4OaOhSm4dx8MiQ7kOZTmJtuez9BBGeloWM9lXDQ0",
-}
-
 def auth_get(auth_key):
-    if auth_key in twitter_credentials:
-        return twitter_credentials[auth_key]
-    return None
+    parser = SafeConfigParser()
+    parser.read('../../../extweetwordcount.config')
+    return parser.get('twitter', auth_key)
 
 ################################################################################
 # Class to listen and act on the incoming tweets
@@ -31,22 +21,22 @@ class TweetStreamListener(tweepy.StreamListener):
         super(self.__class__, self).__init__(listener.tweepy_api())
 
     def on_status(self, status):
-        self.listener.queue().put(status.text, timeout = 0.01)
+        self.listener.queue().put(status.text,timeout=0.01)
         return True
-  
+
     def on_error(self, status_code):
         return True # keep stream alive
-  
+
     def on_limit(self, track):
         return True # keep stream alive
 
 class Tweets(Spout):
 
     def initialize(self, stormconf, context):
-        self._queue = Queue.Queue(maxsize = 100)
+        self._queue = Queue.Queue(maxsize=100)
 
-        consumer_key = auth_get("consumer_key") 
-        consumer_secret = auth_get("consumer_secret") 
+        consumer_key = auth_get("consumer_key")
+        consumer_secret = auth_get("consumer_secret")
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
         if auth_get("access_token") and auth_get("access_token_secret"):
@@ -71,14 +61,14 @@ class Tweets(Spout):
 
     def next_tuple(self):
         try:
-            tweet = self.queue().get(timeout = 0.1) 
+            tweet = self.queue().get(timeout=0.1)
             if tweet:
                 self.queue().task_done()
                 self.emit([tweet])
- 
+
         except Queue.Empty:
             self.log("Empty queue exception ")
-            time.sleep(0.1) 
+            time.sleep(0.1)
 
     def ack(self, tup_id):
         pass  # if a tuple is processed properly, do nothing

@@ -1,21 +1,22 @@
 import sys
+from ConfigParser import SafeConfigParser
 import psycopg2
+
+parser = SafeConfigParser()
+parser.read('../extweetwordcount.config')
 
 conn = psycopg2.connect(
     database="tcount",
-    user="postgres",
-    password="pass",
+    user=parser.get('postgres', 'username'),
+    password=parser.get('postgres', 'password'),
     host="localhost",
     port="5432")
 
 if len(sys.argv) == 2:
     bounds = sys.argv[1].split(",")
     cur = conn.cursor()
-    sql_statement = ("SELECT word, count FROM tweetwordcount WHERE count >= {0} and count <= {1}"
-                     .format(
-                         bounds[0],
-                         bounds[1]))
-    cur.execute(sql_statement)
+    cur.execute("SELECT word, count FROM tweetwordcount WHERE count >= %(lower)d and count <= %(upper)d",
+                {'lower': bounds[0], 'upper': bounds[1]})
     records = cur.fetchall()
     for rec in records:
         print("({0}: {1})".format(rec[0], rec[1]))
