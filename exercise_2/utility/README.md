@@ -4,7 +4,7 @@
 
 * Get and run the setup script
 
-      wget https://raw.githubusercontent.com/lukedoolittle/w205_2017_summer/master/exercise_2/utility/setup.sh?token=AB0QhH9MmObh_uG4CseBTrdwsaGoAawwks5ZfbqqwA%3D%3D
+      wget https://s3.amazonaws.com/lukedoolittle/setup.sh
       chmod +x setup.sh
       ./setup.sh
 

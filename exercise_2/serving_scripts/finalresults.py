@@ -1,9 +1,10 @@
 import sys
+import os
 from ConfigParser import SafeConfigParser
 import psycopg2
 
 parser = SafeConfigParser()
-parser.read('../extweetwordcount.config')
+parser.read(os.path.dirname(os.path.realpath(__file__)) + '/../extweetwordcount.config')
 
 conn = psycopg2.connect(
     database="tcount",

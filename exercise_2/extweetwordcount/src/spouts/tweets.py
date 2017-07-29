@@ -1,15 +1,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
-from ConfigParser import SafeConfigParser
 import time
 import Queue
 import tweepy, copy 
 
 from streamparse.spout import Spout
-
-def auth_get(auth_key):
-    parser = SafeConfigParser()
-    parser.read('../../../extweetwordcount.config')
-    return parser.get('twitter', auth_key)
 
 ################################################################################
 # Class to listen and act on the incoming tweets
@@ -35,13 +29,13 @@ class Tweets(Spout):
     def initialize(self, stormconf, context):
         self._queue = Queue.Queue(maxsize=100)
 
-        consumer_key = auth_get("consumer_key")
-        consumer_secret = auth_get("consumer_secret")
+        consumer_key = stormconf.get('consumer_key')
+        consumer_secret = stormconf.get("consumer_secret")
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
-        if auth_get("access_token") and auth_get("access_token_secret"):
-            access_token = auth_get("access_token")
-            access_token_secret = auth_get("access_token_secret")
+        if stormconf.get("access_token") and stormconf.get("access_token_secret"):
+            access_token = stormconf.get("access_token")
+            access_token_secret = stormconf.get("access_token_secret")
             auth.set_access_token(access_token, access_token_secret)
 
         self._tweepy_api = tweepy.API(auth)
