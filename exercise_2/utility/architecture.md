@@ -75,7 +75,7 @@ exercise_2
         screenshot-top30-results.png   
 ```
 ### Dependencies
-The application assumes that all of the technologies listed in the Technology section above are installed. The application also assumes that PostgreSQL is running and that the credentials present in `extweetwordcount.config` are valid.
+The application assumes that all of the technologies listed in the Technology section above are installed. The application also assumes that PostgreSQL is running and that the credentials present in `extweetwordcount.config` and in `tweetwordcount.clj` are valid.
 
 ## Design Decisions
 
@@ -83,10 +83,11 @@ The application assumes that all of the technologies listed in the Technology se
 All calls to Postgres use named parameters to avoid SQL Injection attacks
 
 ### `extweetwordcount.config`
-* For security purposes the credentials use to access the Twitter API and the PostgreSQL database are present in this external configuration file.
+* For security purposes the credentials use to access the PostgreSQL database are present in this external configuration file.
 
 ### `config.json`
 * The configuration file is set to log at `INFO` level directly to the console. The level and location of the output can be changed by modifying the `envs.prod.log` property.
+* For security purposes the credentials use to access the Twitter API and the PostgreSQL database are present in this external configuration file.
 
 ### `postgres_setup.py`
 * The tweets will be stored in a database 'tcount' in table 'tweetwordcount'
@@ -111,6 +112,9 @@ All calls to Postgres use named parameters to avoid SQL Injection attacks
 In order to run the application follow the instructions present in the `readme.txt` file in the root directory.
 
 ## Potential Improvements
+### Configuration
+The credentials for the PostgreSQL instance are stored in two places `extweetwordcount.config` and `tweetwordcount.clj`. This could cause maintainance issues.
+
 ### Scalability
 The scripts `finalresults.py` and `histogram.py` are not implicitly scale-out ready. Since they only query the local instance of Postgres each will only have local results. In order to create a truely scale-out solution an application would have to be built across the nodes to run those queries on each instance and then aggregate the results.
 

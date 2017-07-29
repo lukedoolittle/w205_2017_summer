@@ -9,8 +9,8 @@ class WordCounter(Bolt):
         self.counts = Counter()
 
         # get the postgres username and password from the config file
-        self.username = stormconf.get('username')
-        self.password = stormconf.get('password')
+        self.username = conf.get('username')
+        self.password = conf.get('password')
 
         # we prepopulate the internal counts dictionary with
         # any values that already exist in the database

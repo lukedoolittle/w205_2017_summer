@@ -1,7 +1,8 @@
 Initial Conditions
 * Postgres is installed and running
 * Apache Storm is installed
-* extweetwordcount.config file is populated with Twitter and PostgreSQL credentials
+* extweetwordcount.config file is populated with PostgreSQL credentials
+* tweetwordcount.clj is populated with PostgreSQL and Twitter API credentials
 
 Initialize the postgres database by running the setup script
       python postgres_setup.py
