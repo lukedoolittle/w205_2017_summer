@@ -6,8 +6,8 @@ from streamparse.bolt import Bolt
 ################################################################################
 # Function to check if the string contains only ascii chars
 ################################################################################
-def ascii_string(s):
-  return all(ord(c) < 128 for c in s)
+def ascii_string(string):
+    return all(ord(c) < 128 for c in string)
 
 class ParseTweet(Bolt):
 
@@ -32,9 +32,10 @@ class ParseTweet(Bolt):
 
             # Filter out the urls
             if word.startswith("http"): continue
-
+            if word.startswith("https"): continue
+            
             # Strip leading and lagging punctuations
-            aword = word.strip("\"?><,'.:;)")
+            aword = word.strip("\"?><,'.:;)!")
 
             # now check if the word contains only ascii
             if len(aword) > 0 and ascii_string(word):
