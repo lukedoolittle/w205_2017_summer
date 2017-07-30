@@ -46,7 +46,7 @@ class WordCounter(Bolt):
                 if cursor.rowcount == 0:
                     cursor.execute("INSERT INTO tweetwordcount (word,count) VALUES (%(word)s, 1)",
                                    {'word': word})
-                    if cursor.worcount == 0:
+                    if cursor.rowcount == 0:
                         self.log('could not insert word {0} into database'.format(word), level='error')
 
         # Increment the local count

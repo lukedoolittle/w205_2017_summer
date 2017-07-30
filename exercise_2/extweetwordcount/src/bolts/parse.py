@@ -14,8 +14,10 @@ class ParseTweet(Bolt):
     def process(self, tup):
         tweet = tup.values[0]  # extract the tweetn
 
-        # Split the tweet into words
-        words = re.split(r' |,|\.|;|\?|:|!|\(|\)|\[|\]|\n|\+|/|&', tweet.replace('&amp', '&').replace('&gt', '>').replace('&lt', '<'))
+        # Split the tweet into words and replace HTML characters
+        # with their ascii equivalent
+        words = re.split(r' |,|\.|;|\?|:|!|\(|\)|\[|\]|\n|\+|/|&',
+                         tweet.replace('&amp', '&').replace('&gt', '>').replace('&lt', '<'))
 
         # Filter out the hash tags, RT, @ and urls
         valid_words = []
