@@ -3,37 +3,51 @@ import os
 from ConfigParser import SafeConfigParser
 import psycopg2
 
+def get_all_wordcounts(username,
+                       password):
+    with psycopg2.connect(
+        database="tcount",
+        user=username,
+        password=password,
+        host="localhost",
+        port="5432") as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT word, count FROM tweetwordcount ORDER BY word asc")
+            records = cursor.fetchall()
+            for record in records:
+                print("({0}: {1})".format(record[0],
+                                          record[1]))
+
+def get_wordcount(word, 
+                  username,
+                  password):
+    with psycopg2.connect(
+        database="tcount",
+        user=username,
+        password=password,
+        host="localhost",
+        port="5432") as connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT count FROM tweetwordcount WHERE word = %(word)s", {'word': word})
+            # we only need to fetch one here since the primary key word is unique
+            records = cursor.fetchone()
+            if records is None:
+                count = 0
+            else:
+                count = records[0]
+            print("Total number of occurrences of of '{0}': {1}".format(
+                word,
+                count))
+
 parser = SafeConfigParser()
 parser.read(os.path.dirname(os.path.realpath(__file__)) + '/../extweetwordcount.config')
 
-conn = psycopg2.connect(
-    database="tcount",
-    user=parser.get('postgres', 'username'),
-    password=parser.get('postgres', 'password'),
-    host="localhost",
-    port="5432")
-
 if len(sys.argv) == 1:
-    cur = conn.cursor()
-    cur.execute("SELECT word, count FROM tweetwordcount ORDER BY word asc")
-    records = cur.fetchall()
-    for rec in records:
-        print("({0}: {1})".format(rec[0], rec[1]))
-    conn.commit()
+    get_all_wordcounts(parser.get('postgres', 'username'),
+                       parser.get('postgres', 'password'))
 elif len(sys.argv) == 2:
-    word = sys.argv[1].replace("'", "''")
-    cur = conn.cursor()
-    cur.execute("SELECT count FROM tweetwordcount WHERE word = %(word)s", {'word': word})
-    records = cur.fetchone()
-    conn.commit()
-    if records is None:
-        count = 0
-    else:
-        count = records[0]
-    print("Total number of occurrences of of '{0}': {1}".format(
-        word,
-        count))
+    get_wordcount(sys.argv[1],
+                  parser.get('postgres', 'username'),
+                  parser.get('postgres', 'password'))
 else:
     raise ValueError()
-
-conn.close()
