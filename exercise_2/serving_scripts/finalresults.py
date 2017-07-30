@@ -50,4 +50,4 @@ elif len(sys.argv) == 2:
                   parser.get('postgres', 'username'),
                   parser.get('postgres', 'password'))
 else:
-    raise ValueError()
+    raise ValueError("You must pass either a word or no parameters")

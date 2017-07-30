@@ -27,7 +27,9 @@ class WordCounter(Bolt):
                     self.counts[record[0]] = record[1]
 
     def process(self, tup):
-        word = tup.values[0]
+        # the parse bolt has ensured that our string is only ascii
+        # but in case the topology changes we should be defensive
+        word = tup.values[0].encode('ascii', 'ignore')
 
         # create a connection to our database
         with psycopg2.connect(
@@ -38,15 +40,14 @@ class WordCounter(Bolt):
             port="5432") as connection:
             with connection.cursor() as cursor:
                 # if there is a record update it with the new word count
-                # if there is not a record insert a new one with a count of 1
-                # you could query the database here for the record but using the local
-                # count saves a database hit
-                if self.counts[word] > 0:
-                    sql_statement = "UPDATE tweetwordcount SET count = count + 1 WHERE word = %(word)s"
-                else:
-                    sql_statement = "INSERT INTO tweetwordcount (word,count) VALUES (%(word)s, 1)"
-                cursor.execute(sql_statement,
+                cursor.execute("UPDATE tweetwordcount SET count = count + 1 WHERE word = %(word)s",
                                {'word': word})
+                # if there is not a record insert a new one with a count of 1
+                if cursor.rowcount == 0:
+                    cursor.execute("INSERT INTO tweetwordcount (word,count) VALUES (%(word)s, 1)",
+                                   {'word': word})
+                    if cursor.worcount == 0:
+                        self.log('could not insert word {0} into database'.format(word), level='error')
 
         # Increment the local count
         self.counts[word] += 1

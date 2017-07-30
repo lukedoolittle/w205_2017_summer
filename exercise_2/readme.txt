@@ -14,7 +14,4 @@ Run the streamparse project
 After closing the running storm instance you can observe the results
       cd ../serving_scripts
       python finalresults.py
-      python hisogram.py 3,8
-      python topn.py 20
-
-If desired you can clean out the existing database by running reset_wordcounts.py from the utility directory
+      python histogram.py 3,8
